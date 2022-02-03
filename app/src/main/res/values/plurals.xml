@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="number_of_characters">
+        <item quantity="zero">There are no Breaking Bad characters.</item>
+        <item quantity="one">There is one Breaking Bad character.</item>
+        <item quantity="other">There are %d Breaking Bad characters.</item>
+    </plurals>
+    <plurals name="number_of_favorites">
+        <item quantity="zero">There are no favorites.</item>
+        <item quantity="one">There is one favorite.</item>
+        <item quantity="other">There are %d favorites.</item>
+    </plurals>
+</resources>

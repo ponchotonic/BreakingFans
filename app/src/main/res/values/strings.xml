@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Breaking Fans</string>
+
+    <!-- CHARACTER LIST STRINGS -->
+    <string name="characters_list_title">Breaking Characters</string>
+    <string name="error_loading">There was a error loading the characters. Please try again.</string>
+    <string name="try_again">Try Again</string>
+    <string name="loading">Loading…</string>
+
+    <!-- CHARACTER ITEM STRINGS -->
+
+    <!-- CHARACTER DETAIL STRINGS -->
+    <string name="nickname_format">Nickname: %s</string>
+    <string name="status_format">Status: %s</string>
+    <string name="category">Category:</string>
+    <string name="actor_format">Portrayed by: %s</string>
+    <string name="save_to_favorites">Save to Favorites</string>
+
+    <!-- FAVORITES STRINGS -->
+    <string name="favorites_title">Breaking Favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+
+</resources>

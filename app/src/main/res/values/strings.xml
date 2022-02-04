@@ -11,8 +11,12 @@
 
     <!-- CHARACTER DETAIL STRINGS -->
     <string name="nickname_format">Nickname: %s</string>
+    <string name="birthday_format">Birthday: %s</string>
     <string name="status_format">Status: %s</string>
-    <string name="category">Category:</string>
+    <string name="occupation">Occupation:</string>
+    <string name="breaking_bad_appearance_format">Breaking Bad seasons: %s</string>
+    <string name="better_call_saul_appearance_format">Better Call Saul seasons: %s</string>
+    <string name="category">Series:</string>
     <string name="actor_format">Portrayed by: %s</string>
     <string name="save_to_favorites">Save to Favorites</string>
 

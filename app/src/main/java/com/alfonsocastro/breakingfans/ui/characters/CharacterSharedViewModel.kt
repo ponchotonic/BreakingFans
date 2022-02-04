@@ -22,6 +22,9 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
     private val _characters = MutableLiveData<List<Character>>()
     val characters: LiveData<List<Character>> = _characters
 
+    private val _selectedCharacter = MutableLiveData<Character>()
+    val selectedCharacter: LiveData<Character> = _selectedCharacter
+
     init {
         getCharacters()
     }
@@ -41,6 +44,12 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
                 _characters.value = listOf()
                 Log.d(TAG, "Error loading characters.", e)
             }
+        }
+    }
+
+    fun setSelectedCharacter(character: Character) {
+        if (character != null) {
+            _selectedCharacter.value = character
         }
     }
 

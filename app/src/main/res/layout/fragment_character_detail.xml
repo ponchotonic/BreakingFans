@@ -1,6 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Image -->
+            <ImageView
+                android:id="@+id/character_image"
+                android:layout_width="0dp"
+                android:layout_height="500dp"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <!-- Name -->
+            <TextView
+                android:id="@+id/character_name"
+                style="?attr/textAppearanceHeadline4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/character_image"
+                tools:text="Walter White" />
+
+            <TextView
+                android:id="@+id/character_nickname"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/nickname_format"
+                app:layout_constraintEnd_toEndOf="@+id/character_name"
+                app:layout_constraintStart_toStartOf="@+id/character_name"
+                app:layout_constraintTop_toBottomOf="@+id/character_name" />
+
+            <!-- Birthday -->
+            <ImageView
+                android:id="@+id/icon_birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@id/character_nickname"
+                app:srcCompat="@drawable/ic_birthday" />
+
+            <TextView
+                android:id="@+id/character_birthday"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/birthday_format"
+                app:layout_constraintStart_toEndOf="@+id/icon_birthday"
+                app:layout_constraintTop_toTopOf="@id/icon_birthday" />
+
+            <!-- Status -->
+            <ImageView
+                android:id="@+id/icon_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@id/character_birthday"
+                app:srcCompat="@drawable/ic_status" />
+
+            <TextView
+                android:id="@+id/character_status"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/status_format"
+                app:layout_constraintBottom_toBottomOf="@id/icon_status"
+                app:layout_constraintStart_toEndOf="@+id/icon_status"
+                app:layout_constraintTop_toTopOf="@id/icon_status" />
+
+            <!-- Occupation -->
+            <ImageView
+                android:id="@+id/icon_occupation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@id/character_status"
+                app:srcCompat="@drawable/ic_occupation" />
+
+            <TextView
+                android:id="@+id/label_occupation"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/occupation"
+                app:layout_constraintBottom_toBottomOf="@id/icon_occupation"
+                app:layout_constraintStart_toEndOf="@+id/icon_occupation"
+                app:layout_constraintTop_toTopOf="@id/icon_occupation" />
+
+            <TextView
+                android:id="@+id/character_occupation"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/label_occupation"
+                app:layout_constraintTop_toBottomOf="@id/label_occupation"
+                tools:text="High School Chemestry\nMeth King Pin" />
+
+            <!-- Appearance -->
+            <ImageView
+                android:id="@+id/icon_appearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@id/character_occupation"
+                app:srcCompat="@drawable/ic_appearance" />
+
+            <TextView
+                android:id="@+id/character_appearance"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/icon_appearance"
+                app:layout_constraintTop_toTopOf="@id/icon_appearance"
+                tools:text="Breaking Bad Seasons: 1, 2, 3, 4, 5\nBetter Call Saul seasons: 3, 4, 5" />
+
+            <!-- Actor -->
+            <ImageView
+                android:id="@+id/icon_actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@+id/character_appearance"
+                app:srcCompat="@drawable/ic_actor" />
+
+            <TextView
+                android:id="@+id/character_actor"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/actor_format"
+                app:layout_constraintBottom_toBottomOf="@id/icon_actor"
+                app:layout_constraintStart_toEndOf="@+id/icon_actor"
+                app:layout_constraintTop_toTopOf="@id/icon_actor" />
+
+            <!-- Category -->
+            <ImageView
+                android:id="@+id/icon_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@id/character_nickname"
+                app:layout_constraintTop_toBottomOf="@+id/character_actor"
+                app:srcCompat="@drawable/ic_category" />
+
+            <TextView
+                android:id="@+id/character_category"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/category"
+                app:layout_constraintBottom_toBottomOf="@id/icon_category"
+                app:layout_constraintStart_toEndOf="@+id/icon_category"
+                app:layout_constraintTop_toTopOf="@id/icon_category" />
+
+            <ImageView
+                android:id="@+id/breaking_bad_image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:importantForAccessibility="no"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/better_call_saul_image"
+                app:layout_constraintStart_toStartOf="@id/character_category"
+                app:layout_constraintTop_toBottomOf="@id/character_category"
+                app:srcCompat="@drawable/logo_breaking_bad" />
+
+            <ImageView
+                android:id="@+id/better_call_saul_image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:importantForAccessibility="no"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/breaking_bad_image"
+                app:layout_constraintEnd_toEndOf="@id/character_name"
+                app:layout_constraintStart_toEndOf="@id/breaking_bad_image"
+                app:layout_constraintTop_toTopOf="@id/breaking_bad_image"
+                app:srcCompat="@drawable/logo_better_call_saul" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/save_to_favorites" />
+
+</LinearLayout>

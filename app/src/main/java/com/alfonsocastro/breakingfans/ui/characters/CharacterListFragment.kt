@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfonsocastro.breakingfans.R
 import com.alfonsocastro.breakingfans.adapters.CharacterAdapter
@@ -16,7 +16,7 @@ import com.alfonsocastro.breakingfans.databinding.FragmentCharacterListBinding
 
 class CharacterListFragment : Fragment() {
 
-    // Binding object instance corresponding to the fragment_start_order.xml layout
+    // Binding object instance corresponding to the xml layout
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
     private var _binding: FragmentCharacterListBinding? = null
@@ -38,8 +38,11 @@ class CharacterListFragment : Fragment() {
 
         binding.charactersRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.charactersRecycler.adapter = CharacterAdapter {
-            Toast.makeText(requireContext(), "${it.name} clicked!", Toast.LENGTH_SHORT).show()
+        binding.charactersRecycler.adapter = CharacterAdapter { selectedCharacter ->
+            // Set selected character in sharedViewModel
+            sharedViewModel.setSelectedCharacter(selectedCharacter)
+            // Navigate to DetailFragment
+            findNavController().navigate(R.id.action_characterListFragment_to_characterDetailFragment)
         }
 
 

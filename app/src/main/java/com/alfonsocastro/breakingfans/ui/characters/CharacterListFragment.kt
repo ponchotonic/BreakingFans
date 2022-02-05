@@ -1,9 +1,7 @@
 package com.alfonsocastro.breakingfans.ui.characters
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfonsocastro.breakingfans.R
 import com.alfonsocastro.breakingfans.adapters.CharacterAdapter
 import com.alfonsocastro.breakingfans.data.CharacterRepository
+import com.alfonsocastro.breakingfans.data.local.BreakingBadDatabase
 import com.alfonsocastro.breakingfans.data.remote.BreakingBadApi
 import com.alfonsocastro.breakingfans.databinding.FragmentCharacterListBinding
 
@@ -26,8 +25,32 @@ class CharacterListFragment : Fragment() {
     private val binding get() = _binding!!
 
     // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
-    private val sharedViewModel: CharacterSharedViewModel by activityViewModels() {
-        CharacterSharedViewModel.CharacterSharedViewModelFactory(CharacterRepository(BreakingBadApi.retrofitService))
+    private val sharedViewModel: CharacterSharedViewModel by activityViewModels {
+        CharacterSharedViewModel.CharacterSharedViewModelFactory(
+            CharacterRepository(
+                BreakingBadApi.retrofitService,
+                BreakingBadDatabase.getDatabase(requireContext().applicationContext)
+            )
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_character_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_favorites -> {
+                openFavorites()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(
@@ -85,6 +108,10 @@ class CharacterListFragment : Fragment() {
                 // Show RecyclerView
             }
         }
+    }
+
+    private fun openFavorites() {
+        findNavController().navigate(R.id.action_characterListFragment_to_favoritesFragment)
     }
 
 }

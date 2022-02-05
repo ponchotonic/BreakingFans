@@ -50,6 +50,7 @@
             android:id="@+id/icon_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="true"
             android:clickable="true"
             android:contentDescription="@string/save_to_favorites"
             android:padding="8dp"
@@ -57,7 +58,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/character_nickname"
             app:srcCompat="@drawable/ic_favorite" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

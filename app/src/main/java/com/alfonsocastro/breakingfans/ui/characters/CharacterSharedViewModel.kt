@@ -47,9 +47,25 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
         }
     }
 
+    fun getFavorite(id: Int): LiveData<Character> {
+        return repository.getFavorite(id).asLiveData()
+    }
+
+    fun deteletFavorite(character: Character) {
+        viewModelScope.launch {
+            repository.deleteFromFavorites(character)
+        }
+    }
+
     fun setSelectedCharacter(character: Character) {
-        if (character != null) {
-            _selectedCharacter.value = character
+        _selectedCharacter.value = character
+    }
+
+    fun saveSelectedCharacterToFavorites() {
+        selectedCharacter.value?.let { character ->
+            viewModelScope.launch {
+                repository.saveCharacterToFavorites(character)
+            }
         }
     }
 

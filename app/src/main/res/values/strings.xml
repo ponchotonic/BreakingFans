@@ -10,6 +10,7 @@
     <!-- CHARACTER ITEM STRINGS -->
 
     <!-- CHARACTER DETAIL STRINGS -->
+    <string name="character_detail_title">Character Info</string>
     <string name="nickname_format">Nickname: %s</string>
     <string name="birthday_format">Birthday: %s</string>
     <string name="status_format">Status: %s</string>
@@ -19,9 +20,13 @@
     <string name="category">Series:</string>
     <string name="actor_format">Portrayed by: %s</string>
     <string name="save_to_favorites">Save to Favorites</string>
+    <string name="save_to_favorites_success_message">Character successfully saved to favorites.</string>
 
     <!-- FAVORITES STRINGS -->
     <string name="favorites_title">Breaking Favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="empty_favorites_list">There are no favorites saved.</string>
+    <string name="delete_from_favorites">Delete from favorites</string>
+    <string name="view_favorites">View favorites</string>
 
 </resources>

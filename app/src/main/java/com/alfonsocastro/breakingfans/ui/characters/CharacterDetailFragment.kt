@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil.load
+import com.alfonsocastro.breakingfans.BreakingBadApplication
 import com.alfonsocastro.breakingfans.R
 import com.alfonsocastro.breakingfans.data.CharacterRepository
 import com.alfonsocastro.breakingfans.data.remote.BreakingBadApi
@@ -14,6 +18,8 @@ import com.alfonsocastro.breakingfans.databinding.FragmentCharacterDetailBinding
 import com.alfonsocastro.breakingfans.model.Character
 import com.alfonsocastro.breakingfans.util.BETTER_CALL_SAUL_CATEGORY
 import com.alfonsocastro.breakingfans.util.BREAKING_BAD_CATEGORY
+
+private const val TAG = "CharacterDetailFragment"
 
 class CharacterDetailFragment : Fragment() {
 
@@ -27,11 +33,19 @@ class CharacterDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
-    private val sharedViewModel: CharacterSharedViewModel by activityViewModels() {
-        CharacterSharedViewModel.CharacterSharedViewModelFactory(CharacterRepository(BreakingBadApi.retrofitService))
+    private val sharedViewModel: CharacterSharedViewModel by activityViewModels {
+        CharacterSharedViewModel.CharacterSharedViewModelFactory(
+            CharacterRepository(
+                BreakingBadApi.retrofitService,
+                (activity?.application as BreakingBadApplication).database
+            )
+        )
     }
 
-    private val isInFavorites = false
+    private val args: CharacterDetailFragmentArgs by navArgs()
+
+    private var isInFavorites: Boolean = false
+    private lateinit var character: Character
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +53,36 @@ class CharacterDetailFragment : Fragment() {
     ): View {
         _binding = FragmentCharacterDetailBinding.inflate(inflater, container, false)
 
-        // Observe ViewModel Character List and submit the adapter the new list.
-        sharedViewModel.selectedCharacter.value?.let { displayCharacter(it) }
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        isInFavorites = args.isFavorite
+
+        // Manage if is in favorites
+        if (isInFavorites) {
+            if (args.characterId != -1) {
+                sharedViewModel.getFavorite(args.characterId)
+                    .observe(viewLifecycleOwner) { character ->
+                        displayCharacter(character)
+                        binding.characterFavoritesButton.apply {
+                            text = getString(R.string.remove_from_favorites)
+                            setOnClickListener { removeFromFavorites(character) }
+                        }
+                    }
+            }
+        } else {
+            // Observe ViewModel Character List and submit the adapter the new list.
+            sharedViewModel.selectedCharacter.value?.let {
+                displayCharacter(it)
+                binding.characterFavoritesButton.apply {
+                    text = getString(R.string.save_to_favorites)
+                    setOnClickListener { saveToFavorites() }
+                }
+            }
+        }
     }
 
     private fun displayCharacter(character: Character) {
@@ -96,7 +136,19 @@ class CharacterDetailFragment : Fragment() {
 
     }
 
-    private fun onFavoritesButtonClicked() {
+    private fun saveToFavorites() {
+        sharedViewModel.saveSelectedCharacterToFavorites()
+        Toast.makeText(
+            requireContext(),
+            R.string.save_to_favorites_success_message,
+            Toast.LENGTH_SHORT
+        )
+            .show()
+        binding.characterFavoritesButton.isEnabled = false
+    }
 
+    private fun removeFromFavorites(character: Character) {
+        sharedViewModel.deteletFavorite(character)
+        findNavController().navigateUp()
     }
 }

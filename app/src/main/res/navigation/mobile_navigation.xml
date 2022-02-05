@@ -13,10 +13,31 @@
         <action
             android:id="@+id/action_characterListFragment_to_characterDetailFragment"
             app:destination="@id/characterDetailFragment" />
+        <action
+            android:id="@+id/action_characterListFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/characterDetailFragment"
         android:name="com.alfonsocastro.breakingfans.ui.characters.CharacterDetailFragment"
-        android:label="CharacterDetailFragment"
-        tools:layout="@layout/fragment_character_detail" />
+        android:label="@string/character_detail_title"
+        tools:layout="@layout/fragment_character_detail">
+        <argument
+            android:name="isFavorite"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="characterId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.alfonsocastro.breakingfans.ui.favorites.FavoritesFragment"
+        android:label="@string/favorites_title"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+    </fragment>
 </navigation>

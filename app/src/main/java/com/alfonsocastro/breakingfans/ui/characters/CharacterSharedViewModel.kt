@@ -35,6 +35,7 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
      */
     private fun getCharacters() {
         viewModelScope.launch {
+            _status.value = CharacterApiStatus.LOADING
             try {
                 _characters.value = repository.getCharactersFromNetwork()
                 _status.value = CharacterApiStatus.DONE

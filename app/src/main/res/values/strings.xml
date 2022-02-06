@@ -2,9 +2,7 @@
     <string name="app_name">Breaking Fans</string>
 
     <!-- CHARACTER LIST STRINGS -->
-    <string name="characters_list_title">Breaking Characters</string>
     <string name="error_loading">There was a error loading the characters. Please try again.</string>
-    <string name="try_again">Try Again</string>
     <string name="loading">Loading…</string>
 
     <!-- CHARACTER ITEM STRINGS -->

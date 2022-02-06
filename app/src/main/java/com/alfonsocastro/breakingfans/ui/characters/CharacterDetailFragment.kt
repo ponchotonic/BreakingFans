@@ -142,13 +142,12 @@ class CharacterDetailFragment : Fragment() {
             requireContext(),
             R.string.save_to_favorites_success_message,
             Toast.LENGTH_SHORT
-        )
-            .show()
+        ).show()
         binding.characterFavoritesButton.isEnabled = false
     }
 
     private fun removeFromFavorites(character: Character) {
-        sharedViewModel.deteletFavorite(character)
+        sharedViewModel.deleteFavorite(character)
         findNavController().navigateUp()
     }
 }

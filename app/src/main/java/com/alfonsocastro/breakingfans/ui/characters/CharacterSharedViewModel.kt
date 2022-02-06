@@ -52,7 +52,13 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
         return repository.getFavorite(id).asLiveData()
     }
 
-    fun deteletFavorite(character: Character) {
+    fun saveFavorite(character: Character) {
+        viewModelScope.launch {
+            repository.saveCharacterToFavorites(character)
+        }
+    }
+
+    fun deleteFavorite(character: Character) {
         viewModelScope.launch {
             repository.deleteFromFavorites(character)
         }
@@ -64,9 +70,7 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
 
     fun saveSelectedCharacterToFavorites() {
         selectedCharacter.value?.let { character ->
-            viewModelScope.launch {
-                repository.saveCharacterToFavorites(character)
-            }
+            saveFavorite(character)
         }
     }
 

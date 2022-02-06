@@ -2,6 +2,7 @@ package com.alfonsocastro.breakingfans.ui.characters
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import com.alfonsocastro.breakingfans.data.CharacterRepository
 import com.alfonsocastro.breakingfans.data.local.BreakingBadDatabase
 import com.alfonsocastro.breakingfans.data.remote.BreakingBadApi
 import com.alfonsocastro.breakingfans.databinding.FragmentCharacterListBinding
+import com.alfonsocastro.breakingfans.model.Character
 
 class CharacterListFragment : Fragment() {
 
@@ -61,12 +63,10 @@ class CharacterListFragment : Fragment() {
 
         binding.charactersRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.charactersRecycler.adapter = CharacterAdapter { selectedCharacter ->
-            // Set selected character in sharedViewModel
-            sharedViewModel.setSelectedCharacter(selectedCharacter)
-            // Navigate to DetailFragment
-            findNavController().navigate(R.id.action_characterListFragment_to_characterDetailFragment)
-        }
+        binding.charactersRecycler.adapter = CharacterAdapter(
+            onItemClicked = { onCharacterSelected(it) },
+            onFavoriteClicked = { onFavoriteIconClicked(it) }
+        )
 
         // Observe ViewModel API Status
         sharedViewModel.status.observe(viewLifecycleOwner) { status ->
@@ -122,6 +122,22 @@ class CharacterListFragment : Fragment() {
 
     private fun tryLoadingListAgain() {
         sharedViewModel.getCharacters()
+    }
+
+    private fun onCharacterSelected(selectedCharacter: Character) {
+        // Set selected character in sharedViewModel
+        sharedViewModel.setSelectedCharacter(selectedCharacter)
+        // Navigate to DetailFragment
+        findNavController().navigate(R.id.action_characterListFragment_to_characterDetailFragment)
+    }
+
+    private fun onFavoriteIconClicked(character: Character) {
+        sharedViewModel.saveFavorite(character)
+        Toast.makeText(
+            requireContext(),
+            R.string.save_to_favorites_success_message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun openFavorites() {

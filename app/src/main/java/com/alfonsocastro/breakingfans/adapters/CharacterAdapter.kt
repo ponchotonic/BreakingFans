@@ -10,13 +10,17 @@ import com.alfonsocastro.breakingfans.R
 import com.alfonsocastro.breakingfans.databinding.ListItemCharacterBinding
 import com.alfonsocastro.breakingfans.model.Character
 
-class CharacterAdapter(private val onItemClicked: (Character) -> Unit) : ListAdapter<Character,
+class CharacterAdapter(
+    private val onItemClicked: (Character) -> Unit,
+    private val onFavoriteClicked: (Character) -> Unit
+) : ListAdapter<Character,
         CharacterAdapter.CharacterViewHolder>(CharacterViewHolder) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         // We create a normal [CharacterViewHolder] inflating the Binding
         val viewHolder = CharacterViewHolder(
-            ListItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ListItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onFavoriteClicked
         )
         // Then we call the onItemClicked to pass the current Hero
         viewHolder.itemView.setOnClickListener {
@@ -33,7 +37,10 @@ class CharacterAdapter(private val onItemClicked: (Character) -> Unit) : ListAda
         holder.bind(item)
     }
 
-    class CharacterViewHolder(private var binding: ListItemCharacterBinding) :
+    class CharacterViewHolder(
+        private var binding: ListItemCharacterBinding,
+        private val onFavoriteClicked: (Character) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         /**
@@ -48,6 +55,7 @@ class CharacterAdapter(private val onItemClicked: (Character) -> Unit) : ListAda
             binding.characterName.text = character.name
             binding.characterNickname.text =
                 binding.root.context.getString(R.string.nickname_format, character.nickname)
+            binding.iconFavorite.setOnClickListener { onFavoriteClicked(character) }
         }
 
         companion object DiffCallback : DiffUtil.ItemCallback<Character>() {

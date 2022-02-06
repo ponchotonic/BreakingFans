@@ -68,16 +68,18 @@ class CharacterListFragment : Fragment() {
             findNavController().navigate(R.id.action_characterListFragment_to_characterDetailFragment)
         }
 
-
-        // Update UI when loading
+        // Observe ViewModel API Status
         sharedViewModel.status.observe(viewLifecycleOwner) { status ->
             bindStatus(status)
         }
 
-        // Observe ViewModel Character List and submit the adapter the new list.
+        // Observe ViewModel List and submit the adapter the new list.
         sharedViewModel.characters.observe(viewLifecycleOwner) { heroList ->
             (binding.charactersRecycler.adapter as CharacterAdapter).submitList(heroList)
         }
+
+        // Set Buttons Listeners
+        binding.tryAgainButton.setOnClickListener { tryLoadingListAgain() }
 
         return binding.root
     }
@@ -85,29 +87,41 @@ class CharacterListFragment : Fragment() {
     private fun bindStatus(status: CharacterApiStatus) {
         when (status) {
             CharacterApiStatus.LOADING -> {
-                // Show Status Image to Loading Icon
+                // Show Status UI
                 binding.statusImage.visibility = View.VISIBLE
                 binding.statusImage.setImageResource(R.drawable.loading_animation)
-                // Hide RecyclerView and TextView
-                binding.emptyListTextView.visibility = View.GONE
-                binding.emptyListTextView.text = getString(R.string.loading)
+                binding.statusTextView.visibility = View.VISIBLE
+                binding.statusTextView.text = getString(R.string.loading)
+                // Hide Error UI
+                binding.tryAgainButton.visibility = View.GONE
+                // Hide Done UI
+                binding.charactersRecycler.visibility = View.GONE
             }
             CharacterApiStatus.ERROR -> {
-                // Show Status Image to Error Icon
+                // Show Status UI
                 binding.statusImage.visibility = View.VISIBLE
                 binding.statusImage.setImageResource(R.drawable.ic_connection_error)
-                // Hide RecyclerView
-                // Show empty TextView
-                binding.emptyListTextView.visibility = View.VISIBLE
-                binding.emptyListTextView.text = getString(R.string.error_loading)
+                binding.statusTextView.visibility = View.VISIBLE
+                binding.statusTextView.text = getString(R.string.error_loading)
+                // Show Error UI
+                binding.tryAgainButton.visibility = View.VISIBLE
+                // Hide Done UI
+                binding.charactersRecycler.visibility = View.GONE
             }
             CharacterApiStatus.DONE -> {
-                // Hide status image and empty TextView
+                // Hide status UI
                 binding.statusImage.visibility = View.GONE
-                binding.emptyListTextView.visibility = View.GONE
-                // Show RecyclerView
+                binding.statusTextView.visibility = View.GONE
+                // Hide Error UI
+                binding.tryAgainButton.visibility = View.GONE
+                // Show Done UI
+                binding.charactersRecycler.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun tryLoadingListAgain() {
+        sharedViewModel.getCharacters()
     }
 
     private fun openFavorites() {

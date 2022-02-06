@@ -33,7 +33,7 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
      * Gets Character information from the DataSource and updates the
      * [Character] [List] [LiveData].
      */
-    private fun getCharacters() {
+    fun getCharacters() {
         viewModelScope.launch {
             _status.value = CharacterApiStatus.LOADING
             try {

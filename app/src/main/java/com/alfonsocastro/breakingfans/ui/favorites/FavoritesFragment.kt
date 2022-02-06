@@ -54,7 +54,7 @@ class FavoritesFragment : Fragment() {
         viewModel.favorites.observe(this.viewLifecycleOwner) { characters ->
             characters.let {
                 adapter.submitList(it)
-                binding.emptyListTextView.visibility = if (it.isEmpty()) {
+                binding.emptyFavoritesTextView.visibility = if (it.isEmpty()) {
                     View.VISIBLE
                 } else {
                     View.GONE

@@ -19,6 +19,7 @@
     <string name="actor_format">Portrayed by: %s</string>
     <string name="save_to_favorites">Save to Favorites</string>
     <string name="save_to_favorites_success_message">Character successfully saved to favorites.</string>
+    <string name="delete_from_favorites_success_message">Character successfully removed from favorites.</string>
 
     <!-- FAVORITES STRINGS -->
     <string name="favorites_title">Breaking Favorites</string>

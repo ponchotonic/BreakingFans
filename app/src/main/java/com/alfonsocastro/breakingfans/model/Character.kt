@@ -2,6 +2,7 @@ package com.alfonsocastro.breakingfans.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
@@ -23,5 +24,8 @@ data class Character(
     val category: String,
     @Json(name = "better_call_saul_appearance")
     @ColumnInfo(name = "better_call_saul_appearance")
-    val betterCallSaulAppearance: List<Int>
-)
+    val betterCallSaulAppearance: List<Int>,
+) {
+    @Ignore
+    var isFavorite: Boolean = false
+}

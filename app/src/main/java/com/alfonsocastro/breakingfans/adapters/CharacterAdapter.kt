@@ -25,7 +25,7 @@ class CharacterAdapter(
         // Then we call the onItemClicked to pass the current Hero
         viewHolder.itemView.setOnClickListener {
             val position =
-                viewHolder.bindingAdapterPosition // TODO: Investigate which is the new one
+                viewHolder.bindingAdapterPosition
             onItemClicked(getItem(position))
         }
         return viewHolder
@@ -55,6 +55,13 @@ class CharacterAdapter(
             binding.characterName.text = character.name
             binding.characterNickname.text =
                 binding.root.context.getString(R.string.nickname_format, character.nickname)
+            // Get Favorite Drawable Icon
+            val favoriteDrawable = if (character.isFavorite) {
+                R.drawable.ic_favorite
+            } else {
+                R.drawable.ic_favorite_border
+            }
+            binding.iconFavorite.setImageResource(favoriteDrawable)
             binding.iconFavorite.setOnClickListener { onFavoriteClicked(character) }
         }
 

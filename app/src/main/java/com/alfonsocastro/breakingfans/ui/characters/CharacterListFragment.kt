@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alfonsocastro.breakingfans.BreakingBadApplication
 import com.alfonsocastro.breakingfans.R
 import com.alfonsocastro.breakingfans.adapters.CharacterAdapter
 import com.alfonsocastro.breakingfans.data.CharacterRepository
-import com.alfonsocastro.breakingfans.data.local.BreakingBadDatabase
 import com.alfonsocastro.breakingfans.data.remote.BreakingBadApi
 import com.alfonsocastro.breakingfans.databinding.FragmentCharacterListBinding
 import com.alfonsocastro.breakingfans.model.Character
@@ -31,10 +31,15 @@ class CharacterListFragment : Fragment() {
         CharacterSharedViewModel.CharacterSharedViewModelFactory(
             CharacterRepository(
                 BreakingBadApi.retrofitService,
-                BreakingBadDatabase.getDatabase(requireContext().applicationContext)
+                (activity?.application as BreakingBadApplication).database
             )
         )
     }
+
+    private val adapter = CharacterAdapter(
+        onItemClicked = { onCharacterSelected(it) },
+        onFavoriteClicked = { onFavoriteIconClicked(it) }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +68,7 @@ class CharacterListFragment : Fragment() {
 
         binding.charactersRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.charactersRecycler.adapter = CharacterAdapter(
-            onItemClicked = { onCharacterSelected(it) },
-            onFavoriteClicked = { onFavoriteIconClicked(it) }
-        )
+        binding.charactersRecycler.adapter = adapter
 
         // Observe ViewModel API Status
         sharedViewModel.status.observe(viewLifecycleOwner) { status ->
@@ -76,6 +78,12 @@ class CharacterListFragment : Fragment() {
         // Observe ViewModel List and submit the adapter the new list.
         sharedViewModel.characters.observe(viewLifecycleOwner) { heroList ->
             (binding.charactersRecycler.adapter as CharacterAdapter).submitList(heroList)
+        }
+
+
+        // Observe ViewModel Favorites
+        sharedViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
+
         }
 
         // Set Buttons Listeners
@@ -132,10 +140,24 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun onFavoriteIconClicked(character: Character) {
-        sharedViewModel.saveFavorite(character)
+
+        // Get String and method called.
+        val toastStringResource: Int = if (character.isFavorite) {
+            sharedViewModel.deleteFavorite(character)
+            R.string.delete_from_favorites_success_message
+        } else {
+            sharedViewModel.saveFavorite(character)
+            R.string.save_to_favorites_success_message
+        }
+        // Notify the adapter the item changed
+        val position = adapter.currentList.indexOf(character)
+        if (position != -1) {
+            adapter.notifyItemChanged(position)
+        }
+        // Show Toast
         Toast.makeText(
             requireContext(),
-            R.string.save_to_favorites_success_message,
+            toastStringResource,
             Toast.LENGTH_SHORT
         ).show()
     }

@@ -30,5 +30,4 @@ class CharacterRepository(
         database.characterDao().delete(character)
     }
 
-
 }

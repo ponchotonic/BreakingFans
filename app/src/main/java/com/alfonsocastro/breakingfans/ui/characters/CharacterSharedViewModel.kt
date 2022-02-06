@@ -25,6 +25,8 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
     private val _selectedCharacter = MutableLiveData<Character>()
     val selectedCharacter: LiveData<Character> = _selectedCharacter
 
+    val favorites: LiveData<List<Character>> = repository.getFavorites().asLiveData()
+
     init {
         getCharacters()
     }
@@ -40,6 +42,12 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
                 _characters.value = repository.getCharactersFromNetwork()
                 _status.value = CharacterApiStatus.DONE
                 Log.d(TAG, "Loaded ${characters.value?.size} characters.")
+                // Map character list to favorites list
+                _characters.value?.map {
+                    if (favorites.value?.contains(it) == true) {
+                        it.isFavorite = true
+                    }
+                }
             } catch (e: Exception) {
                 _status.value = CharacterApiStatus.ERROR
                 _characters.value = listOf()
@@ -55,12 +63,24 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
     fun saveFavorite(character: Character) {
         viewModelScope.launch {
             repository.saveCharacterToFavorites(character)
+            setIsFavoriteCharacter(character, true)
         }
     }
 
     fun deleteFavorite(character: Character) {
         viewModelScope.launch {
             repository.deleteFromFavorites(character)
+            setIsFavoriteCharacter(character, false)
+        }
+    }
+
+    private fun setIsFavoriteCharacter(character: Character, isFavorite: Boolean) {
+        _characters.value?.let {
+            // Check if its on Characters List
+            if (it.contains(character)) {
+                // Get Character and assign isFavorite
+                it[it.lastIndexOf(character)].isFavorite = isFavorite
+            }
         }
     }
 

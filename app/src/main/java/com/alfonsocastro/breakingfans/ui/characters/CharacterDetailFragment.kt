@@ -44,8 +44,7 @@ class CharacterDetailFragment : Fragment() {
 
     private val args: CharacterDetailFragmentArgs by navArgs()
 
-    private var isInFavorites: Boolean = false
-    private lateinit var character: Character
+    private var isCallingFromFavoritesFragment: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,35 +58,32 @@ class CharacterDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        isInFavorites = args.isFavorite
+        isCallingFromFavoritesFragment = args.isFavorite
 
-        // Manage if is in favorites
-        if (isInFavorites) {
+        // Manage if is calling from favorites
+        if (isCallingFromFavoritesFragment) {
+            // Get character from Favorites List
             if (args.characterId != -1) {
                 sharedViewModel.getFavorite(args.characterId)
                     .observe(viewLifecycleOwner) { character ->
+                        character.isFavorite = true
                         displayCharacter(character)
-                        binding.characterFavoritesButton.apply {
-                            text = getString(R.string.remove_from_favorites)
-                            setOnClickListener { removeFromFavorites(character) }
-                        }
                     }
             }
         } else {
             // Observe ViewModel Character List and submit the adapter the new list.
             sharedViewModel.selectedCharacter.value?.let {
                 displayCharacter(it)
-                binding.characterFavoritesButton.apply {
-                    text = getString(R.string.save_to_favorites)
-                    setOnClickListener { saveToFavorites() }
-                }
             }
         }
     }
 
     private fun displayCharacter(character: Character) {
 
-        binding.characterImage.load(character.image)
+        binding.characterImage.load(character.image) {
+            placeholder(R.drawable.loading_animation)
+            error(R.drawable.ic_broken_image)
+        }
 
         binding.characterName.text = character.name
 
@@ -133,6 +129,19 @@ class CharacterDetailFragment : Fragment() {
 
         // Display the season appearance list created before
         binding.characterAppearance.text = appearance.joinToString("\n")
+
+        // Favorites
+        if (character.isFavorite) {
+            binding.characterFavoritesButton.apply {
+                text = getString(R.string.remove_from_favorites)
+                setOnClickListener { removeFromFavorites(character) }
+            }
+        } else {
+            binding.characterFavoritesButton.apply {
+                text = getString(R.string.save_to_favorites)
+                setOnClickListener { saveToFavorites() }
+            }
+        }
 
     }
 

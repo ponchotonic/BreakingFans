@@ -80,12 +80,6 @@ class CharacterListFragment : Fragment() {
             (binding.charactersRecycler.adapter as CharacterAdapter).submitList(heroList)
         }
 
-
-        // Observe ViewModel Favorites
-        sharedViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
-
-        }
-
         // Set Buttons Listeners
         binding.tryAgainButton.setOnClickListener { tryLoadingListAgain() }
 
@@ -150,9 +144,10 @@ class CharacterListFragment : Fragment() {
             R.string.save_to_favorites_success_message
         }
         // Notify the adapter the item changed
-        val position = adapter.currentList.indexOf(character)
+        val position =
+            (binding.charactersRecycler.adapter as CharacterAdapter).currentList.indexOf(character)
         if (position != -1) {
-            adapter.notifyItemChanged(position)
+            (binding.charactersRecycler.adapter as CharacterAdapter).notifyItemChanged(position)
         }
         // Show Toast
         Toast.makeText(

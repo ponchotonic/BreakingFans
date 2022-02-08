@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.alfonsocastro.breakingfans.data.CharacterRepository
 import com.alfonsocastro.breakingfans.model.Character
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // Enum for the BreakingBad Api response status
@@ -28,6 +29,7 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
     val favorites: LiveData<List<Character>> = repository.getFavorites().asLiveData()
 
     init {
+        Log.d(TAG, "init called")
         getCharacters()
     }
 
@@ -39,15 +41,21 @@ class CharacterSharedViewModel(private val repository: CharacterRepository) : Vi
         viewModelScope.launch {
             _status.value = CharacterApiStatus.LOADING
             try {
-                _characters.value = repository.getCharactersFromNetwork()
+                // Get List From Repository
+                val characterList = repository.getCharactersFromNetwork()
+                // Assign list to LiveData
+                _characters.value = characterList
                 _status.value = CharacterApiStatus.DONE
-                Log.d(TAG, "Loaded ${characters.value?.size} characters.")
                 // Map character list to favorites list
-                _characters.value?.map {
-                    if (favorites.value?.contains(it) == true) {
-                        it.isFavorite = true
+                favorites.asFlow().collectLatest {
+                    characterList.map {
+                        Log.d(TAG, "${favorites.value}")
+                        if (favorites.value?.contains(it) == true) {
+                            it.isFavorite = true
+                        }
                     }
                 }
+                Log.d(TAG, "Loaded ${characters.value?.size} characters.")
             } catch (e: Exception) {
                 _status.value = CharacterApiStatus.ERROR
                 _characters.value = listOf()
